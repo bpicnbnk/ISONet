@@ -1,0 +1,46 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${relativeFile}",
+                "--cfg",
+                "configs/IN1k-RISO18.yaml",
+                "--gpus",
+                "0",
+                "--ckpt",
+                "RISO18_dropout_18.pt"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "train",
+            "type": "shell",
+            // python train.py --cfg {CONFIG_FILE} --gpus {GPU_ID} --output {OUTPUT_NAME}
+            "command": "python",
+            "args": [
+                "${relativeFile}",
+                "--cfg",
+                "configs/IN1k-RISO18.yaml",
+                "--gpus",
+                "0",
+                "--output",
+                "RISO18_dropout_18.pt"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
