@@ -56,6 +56,7 @@ For example, if we want to test the performance of R-ISONet 18, download it from
 ```
 # change config files if you are going to test other pre-trained models
 python test.py --cfg configs/IN1k-RISO18.yaml --gpus {GPU_ID} --ckpt RISO18.pt
+python test.py --cfg configs/cifar10_ISO110.yaml --gpus 1,2 --ckpt cifar10_ISO110.pt
 ```
 
 ### Training
@@ -63,6 +64,7 @@ python test.py --cfg configs/IN1k-RISO18.yaml --gpus {GPU_ID} --ckpt RISO18.pt
 To train our model from scratch, use the following command:
 ```
 python train.py --cfg {CONFIG_FILE} --gpus {GPU_ID} --output {OUTPUT_NAME}
+python train.py --cfg configs/cifar10_ISO110.yaml --gpus 1,2 --output cifar10_ISO110.pt
 ```
 
 ## Citing ISONet

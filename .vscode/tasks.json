@@ -30,7 +30,7 @@
             "args": [
                 "${relativeFile}",
                 "--cfg",
-                "configs/IN1k-RISO18.yaml",
+                "configs/cifar10_ISO34.yaml",
                 "--gpus",
                 "0",
                 "--output",

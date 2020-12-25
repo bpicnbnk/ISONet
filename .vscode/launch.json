@@ -12,7 +12,7 @@
             "console": "internalConsole"
         },
         {
-            "name": "Python with args",
+            "name": "test",
             "type": "python",
             "request": "launch",
             "program": "${file}",
@@ -24,6 +24,21 @@
                 "0",
                 "--ckpt",
                 "RISO18_dropout_18.pt"
+            ]
+        },
+        {
+            "name": "train",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "internalConsole",
+            "args": [
+                "--cfg",
+                "configs/cifar10_ISO34.yaml",
+                "--gpus",
+                "0,1",
+                "--output",
+                "cifar10_ISO34.pt"
             ]
         }
     ]
