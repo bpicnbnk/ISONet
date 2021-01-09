@@ -11,8 +11,12 @@ SOLVER:
   WARMUP_EPOCH: 10
   WARMUP_FACTOR: 0.1
 ISON:
-  DEPTH: 34
+  TRANS_FUN: 'bottleneck_transform'
+  DEPTH: 29 
   ORTHO_COEFF: 1e-4
   HAS_BN: False
   HAS_ST: False
   SReLU: True
+  DIRAC_INIT: True
+  DROPOUT: True
+  DROPOUT_RATE: 0.1

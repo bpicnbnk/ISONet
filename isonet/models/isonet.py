@@ -265,7 +265,9 @@ class ISONet(nn.Module):
     def __init__(self):
         super(ISONet, self).__init__()
         # define network structures
-        if 'CIFAR' in C.DATASET.NAME:
+        if 'CIFAR' in C.DATASET.NAME and C.ISON.TRANS_FUN == 'bottleneck_transform':
+            self._construct_cifar_bottle()
+        elif 'CIFAR' in C.DATASET.NAME:
             self._construct_cifar()
         elif C.ISON.TRANS_FUN == 'basic_transform':
             self._construct_imagenet_basic()
@@ -275,6 +277,25 @@ class ISONet(nn.Module):
             raise NotImplementedError
         # initialization
         self._network_init()
+
+    def _construct_cifar_bottle(self):
+        assert (C.ISON.DEPTH - 2) % 9 == 0, \
+            'Model depth should be of the format 6n + 2 for cifar'
+        # Each stage has the same number of blocks for cifar
+        d = int((C.ISON.DEPTH - 2) / 9)
+        
+        num_gs = 1  # C.RESNET.NUM_GROUPS
+        w_b = 16  # C.RESNET.WIDTH_PER_GROUP * num_gs
+        # Stem: (N, 3, 32, 32) -> (N, 16, 32, 32)
+        self.stem = ResStem(w_in=3, w_out=16)
+        # Stage 1: (N, 16, 32, 32) -> (N, 16, 32, 32)
+        self.s1 = ResStage(w_in=16, w_out=16, stride=1, d=d, w_b=w_b)
+        # Stage 2: (N, 16, 32, 32) -> (N, 32, 16, 16)
+        self.s2 = ResStage(w_in=16, w_out=32, stride=2, d=d, w_b=w_b*2)
+        # Stage 3: (N, 32, 16, 16) -> (N, 64, 8, 8)
+        self.s3 = ResStage(w_in=32, w_out=64, stride=2, d=d, w_b=w_b*4)
+        # Head: (N, 64, 8, 8) -> (N, num_classes)
+        self.head = ResHead(w_in=64, nc=C.DATASET.NUM_CLASSES)
 
     def _construct_cifar(self):
         assert (C.ISON.DEPTH - 2) % 6 == 0, \
