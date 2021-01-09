@@ -65,6 +65,15 @@ To train our model from scratch, use the following command:
 ```
 python train.py --cfg {CONFIG_FILE} --gpus {GPU_ID} --output {OUTPUT_NAME}
 python train.py --cfg configs/cifar10_ISO110.yaml --gpus 1,2 --output cifar10_ISO110.pt
+
+nohup python train.py --cfg configs/cifar10_ISO56.yaml --gpus 0,1 --output cifar10_ISO56.pt > cifar10_iso56_log.txt 2>&1 &
+nohup python train.py --cfg configs/cifar100_ISO56.yaml --gpus 0,1 --output cifar100_ISO56.pt > cifar100_iso56_log.txt 2>&1 &
+```
+flops
+```
+python flopscount_iso.py --cfg configs/cifar10_ISO29.yaml --gpus 0,1 --output cifar10_ISO29.pt
+
+python flopscount_iso.py --cfg configs/cifar100_ISO29.yaml --gpus 0,1 --output cifar100_ISO29.pt
 ```
 
 ## Citing ISONet
