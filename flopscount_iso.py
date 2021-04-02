@@ -38,6 +38,7 @@ with torch.cuda.device(0):
     C.freeze()
 
     net = ISONet()
+    # net = models.densenet161()
     macs, params = get_model_complexity_info(net, (3, 32, 32), as_strings=True,
                                              print_per_layer_stat=True, verbose=True)
     print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
