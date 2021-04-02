@@ -286,16 +286,20 @@ class ISONet(nn.Module):
         
         num_gs = 1  # C.RESNET.NUM_GROUPS
         w_b = 16  # C.RESNET.WIDTH_PER_GROUP * num_gs
+        channellist=[64,128,256,512,1024]
         # Stem: (N, 3, 32, 32) -> (N, 16, 32, 32)
-        self.stem = ResStem(w_in=3, w_out=16)
+        self.stem = ResStem(w_in=3, w_out=channellist[0])
         # Stage 1: (N, 16, 32, 32) -> (N, 16, 32, 32)
-        self.s1 = ResStage(w_in=16, w_out=16, stride=1, d=d, w_b=w_b)
+        self.s1 = ResStage(
+            w_in=channellist[0], w_out=channellist[2], stride=1, d=d, w_b=channellist[1])
         # Stage 2: (N, 16, 32, 32) -> (N, 32, 16, 16)
-        self.s2 = ResStage(w_in=16, w_out=32, stride=2, d=d, w_b=w_b*2)
+        self.s2 = ResStage(
+            w_in=channellist[2], w_out=channellist[3], stride=2, d=d, w_b=channellist[2])
         # Stage 3: (N, 32, 16, 16) -> (N, 64, 8, 8)
-        self.s3 = ResStage(w_in=32, w_out=64, stride=2, d=d, w_b=w_b*4)
+        self.s3 = ResStage(
+            w_in=channellist[3], w_out=channellist[4], stride=2, d=d, w_b=channellist[3])
         # Head: (N, 64, 8, 8) -> (N, num_classes)
-        self.head = ResHead(w_in=64, nc=C.DATASET.NUM_CLASSES)
+        self.head = ResHead(w_in=channellist[4], nc=C.DATASET.NUM_CLASSES)
 
     def _construct_cifar(self):
         assert (C.ISON.DEPTH - 2) % 6 == 0, \
